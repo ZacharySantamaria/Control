@@ -1,0 +1,11 @@
+# Compiled source #
+###################
+control
+*.so
+*.o
+
+
+# Test files #
+##############
+*.con
+
