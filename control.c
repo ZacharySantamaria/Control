@@ -4,13 +4,32 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/* marco declaration */
+#define MAX_BUFFER_SIZE 1024
+
 /* enum declaration */
 enum { Success, Failure }; /*General Sucess or Failure*/
 
+/* Structure declaration */
+typedef struct {
+    char *website;
+    char *user;
+    char *password;
+    char *description;
+} Account;
+
+typedef struct Database Database;
+
+struct Database { 
+    int number_of_acc;
+    Account **accounts;
+};
 
 /* function declaration */
 static void menu_startup();
 static void menu_help();
+/*static int write_database(Database *db, FILE *fp);*/
+static int load_database(Database *db, FILE *fp);
 
 
 void
@@ -22,28 +41,69 @@ menu_help() {
 
 void 
 menu_startup() {
-    printf("");
+    /*printf("");*/
+}
+
+/*int write_database(Database *db, FILE *fp) {*/
+
+    /*return Success;*/
+
+/*}*/
+
+int 
+load_database(Database *db, FILE *fp) {
+    char website[MAX_BUFFER_SIZE], username[MAX_BUFFER_SIZE], password[MAX_BUFFER_SIZE], description[MAX_BUFFER_SIZE];
+    Account acc;
+
+    if (db->number_of_acc == 0)
+        db->accounts = malloc(5*sizeof(acc));
+
+    while(fscanf(fp, "%s: %s, %s - %s", website, username, password, description) == 4) { //consider using fgets
+
+        if(db->number_of_acc == 5) 
+            db->accounts = malloc(2*db->number_of_acc*sizeof(acc));
+
+        acc.website = website;
+        acc.user = username;
+        acc.password = password;
+        acc.description = description;
+        db->accounts = malloc(sizeof(acc));
+        db->number_of_acc += 1;
+    }
+
+    return Success;
 }
 
 
 int 
 main(int argc, char *argv[]) {
     FILE *fp;
+    /*char *password;*/
 
     menu_startup();
 
     if (argc == 1) {
-        printf("What would you like the keyword to be?");
+        printf("We will begin creating your database.\n");
+        return Success;
+        
+
 
     } else if (argc == 2) {
         if((fp = fopen(argv[1], "r+")) == NULL) {
             perror("");
 
             return Failure;
+        } else {
+            struct Database db = {0, NULL};
+
+
+            load_database(&db, fp);
+            printf("number of accounts is %d\n", db.number_of_acc);
         }
 
     } else {
         menu_help();
+        return Failure;
     }
 
     fclose(fp);
