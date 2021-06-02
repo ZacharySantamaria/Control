@@ -29,5 +29,7 @@ If you have an existing database
 That should be everything to have it running
 
 ## TODO
+- [ ] Load function needs to be able to hold many accounts.
 - [ ] Need to add the insecure database
 - [ ] Figure out how to salt passwords
+- [ ] Consider adding if a .con exist in the directory it will find it itself.
