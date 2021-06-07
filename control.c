@@ -8,7 +8,7 @@
 #define MAX_BUFFER_SIZE 1024
 
 /* enum declaration */
-enum { Success, Failure }; /*General Sucess or Failure*/
+enum { Success, Failure }; /*General Success or Failure*/
 
 /* Structure declaration */
 typedef struct {
@@ -52,13 +52,13 @@ menu_startup() {
 
 int 
 load_database(Database *db, FILE *fp) {
-    char website[MAX_BUFFER_SIZE], username[MAX_BUFFER_SIZE], password[MAX_BUFFER_SIZE], description[MAX_BUFFER_SIZE];
+    char line[MAX_BUFFER_SIZE], website[MAX_BUFFER_SIZE], username[MAX_BUFFER_SIZE], password[MAX_BUFFER_SIZE], description[MAX_BUFFER_SIZE];
     Account acc;
 
     if (db->number_of_acc == 0)
         db->accounts = malloc(5*sizeof(acc));
 
-    while(fscanf(fp, "%s: %s, %s - %s", website, username, password, description) == 4) { //consider using fgets
+    while(fgets(line, sizeof(line),fp)) { //consider using fgets
 
         if(db->number_of_acc == 5) 
             db->accounts = malloc(2*db->number_of_acc*sizeof(acc));
