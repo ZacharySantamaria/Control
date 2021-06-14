@@ -33,3 +33,5 @@ That should be everything to have it running
 - [ ] Need to add the insecure database
 - [ ] Figure out how to salt passwords
 - [ ] Consider adding if a .con exist in the directory it will find it itself.
+
+# Consider moving to something without having to manage memory allocation.
