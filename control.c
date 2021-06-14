@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 /* marco declaration */
 #define MAX_BUFFER_SIZE 1024
@@ -22,6 +23,7 @@ typedef struct Database Database;
 
 struct Database { 
     int number_of_acc;
+    int curr_size_of_acc;
     Account **accounts;
 };
 
@@ -52,23 +54,28 @@ menu_startup() {
 
 int 
 load_database(Database *db, FILE *fp) {
-    char line[MAX_BUFFER_SIZE], website[MAX_BUFFER_SIZE], username[MAX_BUFFER_SIZE], password[MAX_BUFFER_SIZE], description[MAX_BUFFER_SIZE];
+    char line[MAX_BUFFER_SIZE-1], website[MAX_BUFFER_SIZE-1], username[MAX_BUFFER_SIZE-1], password[MAX_BUFFER_SIZE-1], description[MAX_BUFFER_SIZE-1];
     Account acc;
 
     if (db->number_of_acc == 0)
         db->accounts = malloc(5*sizeof(acc));
 
-    while(fgets(line, sizeof(line),fp)) { //consider using fgets
+    while(fscanf(fp, "%s %s %s", website, username, password ) == 3) {
 
-        if(db->number_of_acc == 5) 
-            db->accounts = malloc(2*db->number_of_acc*sizeof(acc));
+        if(db->number_of_acc <= db->curr_size_of_acc) {
+            db->accounts = realloc(db->accounts, 2*db->number_of_acc*sizeof(acc)); 
+            db->number_of_acc = db->number_of_acc * 2;
+        }
 
-        acc.website = website;
-        acc.user = username;
-        acc.password = password;
-        acc.description = description;
-        db->accounts = malloc(sizeof(acc));
-        db->number_of_acc += 1;
+
+        acc.website = strdup(website);
+        acc.user = strdup(username);
+        acc.password = strdup(password);
+        db->accounts[db->curr_size_of_acc] = malloc(sizeof(acc));
+        db->accounts[db->curr_size_of_acc] = acc;
+
+
+        db->curr_size_of_acc += 1;
     }
 
     return Success;
@@ -94,7 +101,7 @@ main(int argc, char *argv[]) {
 
             return Failure;
         } else {
-            struct Database db = {0, NULL};
+            struct Database db = {0, 0, NULL};
 
 
             load_database(&db, fp);
