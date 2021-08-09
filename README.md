@@ -26,12 +26,13 @@ If you have an existing database
 ```bash
 ./control <FILENAME> #Will load the file
 ```
-That should be everything to have it running
+That should be everything to have it running  
 
 ## TODO
+- [ ] Redo this entire process to reading the file then knowing the sizes of input. It would make dynamic programming this much easier I assume.
 - [ ] Load function needs to be able to hold many accounts.
 - [ ] Need to add the insecure database
 - [ ] Figure out how to salt passwords
-- [ ] Consider adding if a .con exist in the directory it will find it itself.
+- [ ] Consider implementing a way for databases to find itself if in the same directory
 
-# Consider moving to something without having to manage memory allocation.
+# Strongly consider using Rust...
